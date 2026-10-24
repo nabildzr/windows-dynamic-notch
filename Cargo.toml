@@ -1,0 +1,97 @@
+[package]
+name = "windows-dynamic-notch"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.89"
+description = "A Dynamic Island style notch for Windows, built with native Rust, wgpu and vello"
+license = "MIT"
+publish = false
+
+[dependencies]
+winit = { version = "0.30.13", default-features = false, features = ["rwh_06"] }
+wgpu = { version = "30", default-features = false, features = ["std", "dx12", "wgsl"] }
+vello = { version = "0.11", default-features = false, features = ["wgpu"] }
+cosmic-text = { version = "0.19", default-features = false, features = ["std", "peniko"] }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "bmp", "gif", "webp"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "fs"] }
+reqwest = { version = "0.13", default-features = false, features = ["json", "query", "native-tls", "charset"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std", "serde"] }
+log = { version = "0.4", features = ["std"] }
+windows-core = "0.62"
+windows-future = "0.3"
+windows-collections = "0.3"
+
+[build-dependencies]
+embed-resource = "3"
+
+[dependencies.windows]
+version = "0.62"
+features = [
+    # APIs required by the specification
+    "Win32_Foundation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_Dwm",
+    "Win32_System_Com",
+    "Win32_System_Ole",
+    "Win32_UI_Shell",
+    "Win32_System_Power",
+    "Media_Control",
+    "Storage_Streams",
+    "Devices_Bluetooth",
+    "Devices_Enumeration",
+    # Supporting APIs used by the implementation
+    "Foundation",
+    "Foundation_Collections",
+    "Win32_Graphics_DirectComposition",
+    "Win32_UI_Controls",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_System_Threading",
+    "Win32_System_LibraryLoader",
+    "Win32_System_SystemServices",
+    "Win32_System_DataExchange",
+    "Win32_System_Memory",
+    "Win32_System_Com_StructuredStorage",
+    "Win32_System_Registry",
+    "Win32_System_ProcessStatus",
+    "Win32_UI_Shell_Common",
+    "Win32_Media_Audio",
+    "Win32_Storage_FileSystem",
+    "Win32_Security",
+    "Win32_Globalization",
+    "Win32_Media_Audio_Endpoints",
+    "Win32_UI_Accessibility",
+    "Win32_System_Variant",
+    "Win32_NetworkManagement_IpHelper",
+    "Win32_NetworkManagement_Ndis",
+    "Win32_System_SystemInformation",
+    "Devices_Radios",
+    "UI_Notifications",
+    "UI_Notifications_Management",
+    "ApplicationModel",
+]
+
+# vello sizes its GPU bump buffers for huge scenes (~165 MB). On integrated
+# GPUs that memory comes out of system RAM, so the vendored copy uses sizes
+# fitted to the notch UI (~17 MB) with headroom for 200 % display scaling.
+[patch.crates-io]
+vello_encoding = { path = "vendor/vello_encoding" }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = true
+
+# Faster optimized builds for local iteration.
+[profile.devrel]
+inherits = "release"
+lto = "off"
+codegen-units = 16
+incremental = true
+
+[profile.dev.package."*"]
+opt-level = 2
