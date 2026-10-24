@@ -114,6 +114,14 @@ Menu, opsional shortcut Desktop dan *Launch at startup*, serta entri di
 *Settings > Apps* untuk uninstall. Uninstaller menanyakan apakah data di
 `%LOCALAPPDATA%\WindowsDynamicNotch` ikut dihapus.
 
+Image build siap pakai (Rust + MinGW-w64 + NSIS) tersedia di GitHub Container
+Registry dan dibangun oleh workflow `.github/workflows/builder-image.yml`:
+
+```powershell
+docker pull ghcr.io/nabildzr/notch-builder:latest
+docker run --rm -v "${PWD}:/src" -w /src ghcr.io/nabildzr/notch-builder:latest cargo build --release --target x86_64-pc-windows-gnu
+```
+
 Build native dengan toolchain MSVC juga bisa (butuh Rust via rustup dan
 Visual Studio Build Tools dengan workload C++):
 
