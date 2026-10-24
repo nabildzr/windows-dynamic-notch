@@ -3,6 +3,10 @@
 # MSVC or NSIS installation.
 FROM rust:1-bookworm
 
+LABEL org.opencontainers.image.source="https://github.com/nabildzr/windows-dynamic-notch" \
+      org.opencontainers.image.description="Build environment for Windows Dynamic Notch: Rust + MinGW-w64 + NSIS (cross-compiles to x86_64-pc-windows-gnu)" \
+      org.opencontainers.image.licenses="MIT"
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends -o Acquire::Retries=5 \
         gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 binutils-mingw-w64-x86-64 \

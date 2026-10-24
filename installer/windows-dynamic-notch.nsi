@@ -23,6 +23,9 @@ RequestExecutionLevel user
 
 VIProductVersion "${APP_VERSION}.0"
 VIAddVersionKey "ProductName" "${APP_NAME}"
+VIAddVersionKey "CompanyName" "nabildzr"
+VIAddVersionKey "LegalCopyright" "Copyright (c) 2026 nabildzr. MIT License."
+VIAddVersionKey "Comments" "https://github.com/nabildzr/windows-dynamic-notch"
 VIAddVersionKey "FileDescription" "${APP_NAME} Setup"
 VIAddVersionKey "FileVersion" "${APP_VERSION}"
 VIAddVersionKey "ProductVersion" "${APP_VERSION}"
@@ -36,6 +39,7 @@ VIAddVersionKey "ProductVersion" "${APP_VERSION}"
 !define MUI_FINISHPAGE_RUN "$INSTDIR\${APP_EXE}"
 
 !insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE "../LICENSE"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
@@ -60,12 +64,15 @@ Section "!${APP_NAME}" SecMain
   SetOutPath "$INSTDIR"
   File "../dist/${APP_EXE}"
   File "../README.md"
+  File "../LICENSE"
   File /oname=Inter-OFL.txt "../assets/fonts/OFL.txt"
   WriteUninstaller "$INSTDIR\Uninstall.exe"
   CreateShortcut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${APP_EXE}"
   WriteRegStr HKCU "Software\${APP_ID}" "InstallDir" "$INSTDIR"
   WriteRegStr HKCU "${UNINST_KEY}" "DisplayName" "${APP_NAME}"
   WriteRegStr HKCU "${UNINST_KEY}" "DisplayVersion" "${APP_VERSION}"
+  WriteRegStr HKCU "${UNINST_KEY}" "Publisher" "nabildzr"
+  WriteRegStr HKCU "${UNINST_KEY}" "URLInfoAbout" "https://github.com/nabildzr/windows-dynamic-notch"
   WriteRegStr HKCU "${UNINST_KEY}" "DisplayIcon" "$INSTDIR\${APP_EXE}"
   WriteRegStr HKCU "${UNINST_KEY}" "InstallLocation" "$INSTDIR"
   WriteRegStr HKCU "${UNINST_KEY}" "UninstallString" '"$INSTDIR\Uninstall.exe"'
@@ -88,6 +95,7 @@ Section "Uninstall"
   !insertmacro StopApp
   Delete "$INSTDIR\${APP_EXE}"
   Delete "$INSTDIR\README.md"
+  Delete "$INSTDIR\LICENSE"
   Delete "$INSTDIR\Inter-OFL.txt"
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR"

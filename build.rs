@@ -38,7 +38,10 @@ BEGIN
   BEGIN
     BLOCK "040904B0"
     BEGIN
+      VALUE "CompanyName", "nabildzr"
       VALUE "FileDescription", "Windows Dynamic Notch"
+      VALUE "LegalCopyright", "Copyright (c) 2026 nabildzr. MIT License."
+      VALUE "Comments", "https://github.com/nabildzr/windows-dynamic-notch"
       VALUE "FileVersion", "{version}"
       VALUE "InternalName", "windows-dynamic-notch"
       VALUE "OriginalFilename", "windows-dynamic-notch.exe"
